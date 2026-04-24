@@ -1,448 +1,400 @@
-# Eco-Share – Campus Carpooling & Bike Sharing System
+# Eco-Share: Campus Carpooling and Bike Sharing
 
-## 1. Introduction
+# Demonstration Video
 
-Daily commuting to college is a common challenge faced by students. Many rely on overcrowded public transport or expensive private vehicles, which leads to inconvenience, increased costs, and environmental harm. In many cases, students also face issues such as delays, lack of availability, and safety concerns during travel.
+Add your demo link here:
 
-With the rise of digital platforms, there is an opportunity to simplify commuting through shared mobility solutions within a trusted campus environment. Eco-Share is designed as a smart solution to enable students to coordinate rides efficiently and safely while promoting sustainability.
+https://github.com/user-attachments/assets/your-demo-video-id
 
-**Key concerns addressed:**
-- Overcrowded and unreliable public transport
-- High fuel and travel costs
-- Increased traffic and pollution
-- Lack of a trusted ride-sharing system within campuses
+# Code Explanation Video
 
----
+Add your code walkthrough link here:
 
-## 2. Description
+https://github.com/user-attachments/assets/your-code-explanation-video-id
 
-Eco-Share is a campus-based carpooling and bike-sharing platform that allows students to share rides with peers traveling in the same direction. It provides a structured and secure way for students to coordinate travel without relying on informal communication channels.
+Smarter campus commuting with shared rides, shared bikes, and real-time trip coordination.
 
-The platform enables users to:
-- Post ride details (origin, destination, time)
-- View available rides in real time
-- Join rides based on seat availability
-- Track active and upcoming trips
-- Book and return shared bikes
-- Manage bookings from a personalized dashboard
+![React](https://img.shields.io/badge/Frontend-React%2018-blue)
+![Node.js](https://img.shields.io/badge/Backend-Node.js%20%2B%20Express-green)
+![MongoDB](https://img.shields.io/badge/Database-MongoDB-brightgreen)
+![Socket.IO](https://img.shields.io/badge/Realtime-Socket.IO-black)
+![Vite](https://img.shields.io/badge/Bundler-Vite-646CFF)
 
-The system ensures a centralized and organized way of managing daily travel, replacing informal communication methods such as messaging groups or notice boards. It also enhances convenience by providing all travel-related information in one place.
+## Table of Contents
 
----
+- [Overview](#overview)
+- [Core Features](#core-features)
+- [System Architecture](#system-architecture)
+- [Tech Stack](#tech-stack)
+- [Project Structure](#project-structure)
+- [Quick Start](#quick-start)
+- [Environment Variables](#environment-variables)
+- [API Reference](#api-reference)
+- [Socket Events](#socket-events)
+- [Role Access Matrix](#role-access-matrix)
+- [Demo Script for Viva / Presentation](#demo-script-for-viva--presentation)
+- [Troubleshooting](#troubleshooting)
+- [Deployment Notes](#deployment-notes)
+- [Roadmap](#roadmap)
+- [Contributing](#contributing)
 
-## 3. Problem Statement
+## Overview
 
-Public transportation to colleges can be crowded or unreliable, and individual commuting via private vehicles is expensive and environmentally unfriendly. Students often face difficulties in finding reliable and cost-effective travel options on a daily basis.
+Eco-Share is a full-stack campus mobility platform that helps students and drivers:
 
-Currently, there is no safe, campus-restricted platform that allows students to coordinate shared travel effectively and securely. Existing solutions are either:
-- Not limited to campus users (lack of trust)
-- Unorganized and scattered across different platforms
-- Inefficient in managing seat availability and ride coordination
+- Post and join shared rides
+- Track active rides in real time
+- Manage bike booking and returns
+- Use role-based dashboards and permissions
+- Rate and review ride participants
 
-This creates a need for a dedicated system that ensures safety, reliability, and efficiency in student commuting.
+The platform is designed for trusted institutional usage by requiring institutional email domains during registration.
 
----
+## Core Features
 
-## 4. Scenario
+### Authentication and Access Control
 
-A student traveling from home to college can post a ride by entering details such as pickup location, destination, and time. The student also specifies the number of available seats for other passengers.
+- JWT-based login/register flow
+- Institutional email validation (`.edu`, `.edu.in`, `.ac.in`)
+- Role-based authorization (`student`, `driver`, `admin`)
+- Protected routes in frontend and backend
 
-Other students with similar routes can:
-- View the ride on the platform
-- Check seat availability
-- Request or directly join the ride
+### Ride Management
 
-The system dynamically updates the number of available seats, ensuring proper coordination and preventing overbooking. All rides are displayed on a "Live Trips" board, making it easy for users to find suitable options.
+- Drivers/admins can create rides
+- Students/admins can book and leave rides
+- Drivers/admins can start, end, cancel rides
+- Drivers can remove a passenger from their own ride
+- Automatic seat availability updates
 
-**Example Flow:**
-- Student A posts a ride with 3 available seats
-- Student B and C join the ride
-- Seat count updates from 3 → 1
-- Ride becomes unavailable once seats are filled
+### Smart Recommendations
 
-**This approach:**
-- Reduces travel costs by sharing expenses
-- Minimizes the number of vehicles on the road
-- Promotes eco-friendly commuting
-- Builds a sense of community within the campus
+- Personalized ride recommendations based on:
+  - User travel history (common source/destination)
+  - Typical ride timings
+  - Optional location/time query hints
 
----
+### Bike Sharing
 
-## 5. Architecture
+- Add bikes to inventory
+- Browse all/available bikes
+- Book and return bikes
+- Rental history tracking with usage hours
 
-Eco-Share follows a three-tier architecture to ensure scalability, security, and efficient performance.
+### Real-Time Experience
 
-### 1. Presentation Layer (Frontend)
-This layer provides the user interface developed using React.js. It allows users to register, log in, post rides, view live trips, book bikes, and join rides. The interface dynamically displays real-time updates such as seat availability, active trips, and bike status.
+- Socket.IO integration for:
+  - New ride broadcasts
+  - Ride update broadcasts
+  - Ride cancellation broadcasts
+  - Live location updates during active rides
 
-**Technologies:**
-- React 18.3 + Vite
-- React Router v6 for navigation
-- Tailwind CSS for responsive styling
-- Axios for HTTP requests
-- React Context for state management
+### Driver Availability and Ratings
 
-### 2. Application Layer (Backend)
-The backend manages all business logic, including ride creation, joining functionality, seat updates, and bike management. It also handles authentication and role-based access control, ensuring that only authorized users can access the platform. This layer processes requests and communicates with the database.
+- Drivers can toggle online/offline status
+- Fetch available drivers sorted by rating
+- Rate drivers and passengers after completed rides
+- Retrieve user ratings and review history
 
-**Technologies:**
-- Node.js with Express.js
-- JWT authentication
-- Bcryptjs for password hashing
-- CORS for cross-origin requests
+## System Architecture
 
-### 3. Data Layer (Database)
-The database stores all system-related data, including user details, ride information, bike inventory, and booking records. It ensures data consistency, integrity, and efficient retrieval of information.
-
-**Technologies:**
-- MongoDB with Mongoose ODM
-- Indexed collections for performance
-
----
-
-## 6. Project Flow (System Flow)
-
-1. User registers using a college email address
-2. User logs into the system
-3. User can post a ride or view available rides
-4. Other users join rides based on availability
-5. Seat count updates automatically
-6. Ride details are displayed on the Live Trips board
-7. Users can book and return available bikes
-8. Dashboard provides personalized trip and booking history
-
----
-
-## 7. User Flow
-
-### Student/User Flow
-**Explanation:**
-- The user registers using a valid college email address
-- After login, the user accesses the dashboard
-- The user can either post a ride or view available trips
-- The user joins a ride based on availability
-- The system updates the seat count automatically
-- The user can also book bikes for short trips
-
-**Steps:**
-1. Register → Login → Access Dashboard
-2. Post Ride / View Live Trips
-3. Join Ride → Seat Update → Travel Confirmation
-4. Book Bike → Use Bike → Return Bike
-
-### Ride Creator Flow
-**Explanation:**
-- The user creates a ride by entering travel details
-- The number of seats is defined
-- The ride is published for others to join
-- The creator monitors participants
-
-**Steps:**
-1. Login → Post Ride → Enter Details
-2. Set Seat Limit → Publish Ride
-3. Monitor Participants
-
-### Ride Joiner Flow
-**Explanation:**
-- The user browses available rides
-- The user selects a ride and checks seat availability
-- If seats are available, the user joins the ride and receives confirmation
-
-**Steps:**
-1. Login → View Live Trips
-2. Select Ride → Check Availability
-3. Join Ride → Confirmation
-
-### Bike Rental Flow
-**Explanation:**
-- The user browses available bikes
-- Selects a bike and books it
-- Uses the bike for short-distance campus travel
-- Returns the bike when done
-
-**Steps:**
-1. Login → View Available Bikes
-2. Filter by Type/Location → Book Now
-3. Complete Trip → Return Bike
-
-### Admin Flow
-**Explanation:**
-- The admin manages users and ensures valid registrations
-- The admin monitors rides and system activities
-- Necessary actions are taken to maintain system integrity
-
-**Steps:**
-1. Login (Admin) → Manage Users
-2. Verify Email Domains → Monitor Rides
-3. Maintain System
-
----
-
-## 8. Project Structure
-
-```
-Eco-Share/
-├── backend/
-│   ├── config/
-│   │   └── db.js                    # MongoDB connection
-│   ├── controllers/
-│   │   ├── authController.js        # Authentication logic
-│   │   ├── rideController.js        # Ride management logic
-│   │   └── bikeController.js        # Bike management logic
-│   ├── middleware/
-│   │   ├── authMiddleware.js        # JWT verification
-│   │   └── errorMiddleware.js       # Error handling
-│   ├── models/
-│   │   ├── User.js                  # User schema
-│   │   ├── Ride.js                  # Ride schema
-│   │   └── Bike.js                  # Bike schema
-│   ├── routes/
-│   │   ├── authRoutes.js            # Auth endpoints
-│   │   ├── rideRoutes.js            # Ride endpoints
-│   │   └── bikeRoutes.js            # Bike endpoints
-│   ├── .env.example
-│   ├── package.json
-│   └── server.js                    # Express app configuration
-│
-├── frontend/
-│   ├── public/
-│   ├── src/
-│   │   ├── api/
-│   │   │   ├── axios.js             # Axios instance with interceptors
-│   │   │   ├── errorHandler.js      # Error handling utility
-│   │   │   ├── services.js          # API service methods
-│   │   │   └── hooks.js             # Custom React hooks
-│   │   ├── components/
-│   │   │   └── ProtectedRoute.jsx   # Route guard component
-│   │   ├── context/
-│   │   │   ├── AuthContext.jsx      # Authentication state
-│   │   │   └── ToastContext.jsx     # Toast notifications
-│   │   ├── pages/
-│   │   │   ├── HomePage.jsx         # Landing page
-│   │   │   ├── LoginPage.jsx        # Login form
-│   │   │   ├── RegisterPage.jsx     # Registration form
-│   │   │   ├── RideListingPage.jsx  # Browse rides
-│   │   │   ├── CreateRidePage.jsx   # Post ride form
-│   │   │   ├── BikeListingPage.jsx  # Browse bikes
-│   │   │   └── DashboardPage.jsx    # User dashboard
-│   │   ├── App.jsx                  # Main router & layout
-│   │   ├── main.jsx                 # React entry point
-│   │   └── index.css                # Global styles
-│   ├── .env.example
-│   ├── index.html
-│   ├── package.json
-│   ├── postcss.config.js
-│   ├── tailwind.config.js
-│   └── vite.config.js
-│
-├── .gitignore
-├── README.md                        # This file
-└── Eco-Share – Campus Carpooling & Bike Sharing.pdf
+```text
+Client (React + Vite)
+  |
+  | HTTP (Axios) + WebSocket (Socket.IO Client)
+  v
+API Server (Node.js + Express + Socket.IO)
+  |
+  | Mongoose ODM
+  v
+MongoDB
 ```
 
----
+- Frontend handles UI, navigation, auth state, and API service abstraction.
+- Backend handles auth, business logic, permissions, and real-time events.
+- MongoDB stores users, rides, bike inventory, and ratings.
 
-## 9. Pre-Requisites
+## Tech Stack
 
-- Basic knowledge of HTML, CSS, and JavaScript
-- Understanding of React.js and React Hooks
-- Knowledge of backend development and RESTful APIs
-- Familiarity with database concepts (SQL/NoSQL)
-- Node.js and npm installed locally
+### Frontend
 
----
-
-## 10. Required Technologies
-
-**Frontend:**
-- React.js (18.3+)
-- Vite (build tool)
-- React Router (v6)
+- React 18
+- Vite 5
+- React Router v6
 - Tailwind CSS
 - Axios
+- Leaflet + React Leaflet
+- socket.io-client
+- lucide-react
 
-**Backend:**
-- Node.js with Express.js
-- MongoDB (database)
-- Mongoose (ODM)
-- JWT (authentication)
-- Bcryptjs (password hashing)
+### Backend
 
-**Development Tools:**
-- npm/yarn (package managers)
-- Git (version control)
-- Postman/Thunder Client (API testing)
+- Node.js
+- Express 4
+- MongoDB + Mongoose
+- JWT (jsonwebtoken)
+- bcryptjs
+- Socket.IO
+- CORS
+- dotenv
 
-**Deployment:**
-- Render / Railway / Heroku (backend)
-- Vercel / Netlify (frontend)
+## Project Structure
 
----
+```text
+FSD Project/
+|-- backend/
+|   |-- config/
+|   |   `-- db.js
+|   |-- controllers/
+|   |   |-- authController.js
+|   |   |-- bikeController.js
+|   |   |-- rideController.js
+|   |   `-- userController.js
+|   |-- middleware/
+|   |   |-- authMiddleware.js
+|   |   `-- errorMiddleware.js
+|   |-- models/
+|   |   |-- Bike.js
+|   |   |-- Ride.js
+|   |   `-- User.js
+|   |-- routes/
+|   |   |-- authRoutes.js
+|   |   |-- bikeRoutes.js
+|   |   |-- rideRoutes.js
+|   |   `-- userRoutes.js
+|   |-- package.json
+|   `-- server.js
+|-- frontend/
+|   |-- src/
+|   |   |-- api/
+|   |   |-- components/
+|   |   |-- context/
+|   |   |-- pages/
+|   |   `-- utils/
+|   |-- package.json
+|   `-- vite.config.js
+`-- README.md
+```
 
-## 11. Suggested Database
+## Quick Start
 
-### Users Collection
-- `_id` (ObjectId)
-- `name` (String)
-- `email` (String, unique)
-- `password` (String, hashed)
-- `role` (String: student, driver, admin)
-- `createdAt` (Date)
+### Prerequisites
 
-### Rides Collection
-- `_id` (ObjectId)
-- `driver` (ObjectId, ref: User)
-- `source` (String)
-- `destination` (String)
-- `departureTime` (Date)
-- `totalSeats` (Number)
-- `availableSeats` (Number)
-- `fare` (Number)
-- `status` (String: active, completed, cancelled)
-- `passengers` (Array of ObjectId, ref: User)
-- `description` (String)
-- `createdAt` (Date)
+- Node.js 18+
+- npm 9+
+- MongoDB Atlas URI or local MongoDB instance
 
-### Bikes Collection
-- `_id` (ObjectId)
-- `bikeName` (String)
-- `bikeNumber` (String, unique)
-- `bikeType` (String: standard, electric, mountain)
-- `location` (String)
-- `isAvailable` (Boolean)
-- `currentUser` (ObjectId, ref: User)
-- `pricePerHour` (Number)
-- `condition` (String: excellent, good, fair)
-- `rentalHistory` (Array of bookings)
-- `createdAt` (Date)
-
----
-
-## 12. Key Features
-
-✅ **Post a Ride** with origin, destination, departure time, and seat count
-
-✅ **Real-time Seat Counter** that updates automatically when passengers join
-
-✅ **Live Trips Board** displaying all available rides for campus travel
-
-✅ **Secure Login** using email and password with JWT authentication
-
-✅ **Easy Ride Joining System** with one-click booking
-
-✅ **Bike Sharing Module** with availability and rental tracking
-
-✅ **User Dashboard** showing posted rides, bookings, and current activities
-
-✅ **Search & Filter** rides by source, destination, and availability
-
-✅ **Mobile Responsive** design for all devices
-
-✅ **Toast Notifications** for user feedback
-
----
-
-## 13. Optional Advanced Features
-
-- Email notifications for ride updates and reminders
-- GPS-based route optimization and live tracking
-- User rating and feedback system for drivers and passengers
-- In-app messaging between ride creator and joiners
-- Ride history and analytics dashboard
-- Payment integration for bike rentals
-- Admin dashboard for system monitoring
-- Automated ride completion and archival
-- Bike maintenance tracking and reservation
-- Carbon footprint calculator
-
----
-
-## 14. Getting Started
-
-### Backend Setup
+### 1. Clone and enter project
 
 ```bash
-# Navigate to backend directory
+git clone <your-repo-url>
+cd "FSD Project"
+```
+
+### 2. Install backend dependencies
+
+```bash
 cd backend
-
-# Install dependencies
 npm install
-
-# Create .env file from .env.example
-cp .env.example .env
-
-# Start development server
-npm run dev
 ```
 
-### Frontend Setup
+### 3. Create backend environment file
+
+Create `backend/.env`:
+
+```env
+PORT=5000
+MONGO_URI=your_mongodb_connection_string
+JWT_SECRET=your_super_secret_key
+JWT_EXPIRES_IN=7d
+```
+
+### 4. Run backend
 
 ```bash
-# Navigate to frontend directory
-cd frontend
-
-# Install dependencies
-npm install
-
-# Create .env file from .env.example
-cp .env.example .env
-
-# Start development server
 npm run dev
 ```
 
-### Default Ports
-- Backend: `http://localhost:5000`
+### 5. Install frontend dependencies
+
+Open a second terminal:
+
+```bash
+cd frontend
+npm install
+```
+
+### 6. Create frontend environment file (optional)
+
+Create `frontend/.env`:
+
+```env
+VITE_API_URL=http://localhost:5000/api
+VITE_SOCKET_URL=http://localhost:5000
+```
+
+If omitted, frontend auto-resolves host-based URLs for local/LAN testing.
+
+### 7. Run frontend
+
+```bash
+npm run dev
+```
+
+### 8. Open application
+
 - Frontend: `http://localhost:5173`
+- Backend health check: `http://localhost:5000/api/health`
 
----
+## Environment Variables
 
-## 15. API Endpoints
+### Backend (`backend/.env`)
 
-### Authentication
-- `POST /api/auth/register` - Register new user
-- `POST /api/auth/login` - User login
-- `GET /api/auth/me` - Get current user (protected)
+- `PORT`: API server port (default `5000`)
+- `MONGO_URI`: MongoDB connection string
+- `JWT_SECRET`: JWT signing secret
+- `JWT_EXPIRES_IN`: Token lifetime (default `7d`)
+
+### Frontend (`frontend/.env`)
+
+- `VITE_API_URL`: Base API URL (defaults to `http://<host>:5000/api`)
+- `VITE_SOCKET_URL`: Socket server URL (defaults to `http://<host>:5000`)
+
+## API Reference
+
+Base URL: `/api`
+
+### Health
+
+- `GET /health` - API status
+
+### Auth
+
+- `POST /auth/register` - Register user
+- `POST /auth/login` - Login user
+- `GET /auth/me` - Get current user (protected)
+- `PUT /auth/profile` - Update profile/password (protected)
 
 ### Rides
-- `POST /api/rides` - Create new ride (protected)
-- `GET /api/rides` - Get all active rides
-- `GET /api/rides/search` - Search rides by source/destination
-- `GET /api/rides/:id` - Get ride details
-- `POST /api/rides/:id/book` - Join a ride (protected)
+
+- `POST /rides` - Create ride (driver/admin)
+- `GET /rides` - List rides
+- `GET /rides/search?source=&destination=` - Search active rides
+- `GET /rides/recommendations?location=&timing=` - Personalized recommendations (protected)
+- `GET /rides/:id` - Ride details
+- `POST /rides/:id/book` - Book ride (student/admin)
+- `POST /rides/:id/leave` - Leave ride (student/admin)
+- `POST /rides/:id/start` - Start ride (driver/admin)
+- `POST /rides/:id/end` - End ride (driver/admin)
+- `DELETE /rides/:id` - Cancel ride (driver/admin)
+- `DELETE /rides/:rideId/passengers/:userId` - Remove passenger (driver/admin)
 
 ### Bikes
-- `POST /api/bikes` - Add new bike
-- `GET /api/bikes` - Get all bikes
-- `GET /api/bikes/available` - Get available bikes only
-- `GET /api/bikes/:id` - Get bike details
-- `POST /api/bikes/:id/book` - Book a bike (protected)
-- `POST /api/bikes/:id/return` - Return a bike (protected)
+
+- `POST /bikes` - Add bike
+- `GET /bikes` - List all bikes
+- `GET /bikes/available?bikeType=` - List available bikes
+- `GET /bikes/:id` - Bike details
+- `POST /bikes/:id/book` - Book bike (protected)
+- `POST /bikes/:id/return` - Return bike (protected)
+
+### Users / Driver Features
+
+- `POST /users/driver-online-status` - Toggle online status (driver/admin)
+- `GET /users/available-drivers` - Get available drivers
+- `GET /users/driver/:driverId` - Driver profile + recent rides
+- `POST /users/rate-driver/:rideId` - Rate driver (protected)
+- `POST /users/rate-passenger/:rideId` - Rate passenger (protected)
+- `GET /users/ratings/:userId` - User ratings and reviews
+
+## Socket Events
+
+### Client to Server
+
+- `join-ride` with `rideId`
+- `update-location` with `{ rideId, userId, coords }`
+
+### Server to Client
+
+- `ride-created`
+- `ride-updated`
+- `ride-cancelled`
+- `location-updated`
+
+## Role Access Matrix
+
+| Action | Student | Driver | Admin |
+|---|---:|---:|---:|
+| Register/Login | Yes | Yes | Yes |
+| Create ride | No | Yes | Yes |
+| Book ride | Yes | No | Yes |
+| Start/End/Cancel own ride | No | Yes | Yes |
+| Add bike | No | Yes | Yes |
+| Book/Return bike | Yes | Yes | Yes |
+| Toggle driver online status | No | Yes | Yes |
+
+## Demo Script for Viva / Presentation
+
+Use this sequence for a smooth project demonstration:
+
+1. Show registration with institutional email.
+2. Login as driver and create a ride.
+3. Login as student and book the same ride.
+4. Show seat count update and ride details refresh.
+5. Start the ride and open active ride tracking page.
+6. Trigger location updates to demonstrate real-time sync.
+7. End ride and show final status.
+8. Book and return a bike.
+9. Show rating flow and driver profile statistics.
+
+## Troubleshooting
+
+### MongoDB connection fails
+
+- Verify `MONGO_URI` in `backend/.env`
+- Confirm Atlas IP allowlist / local MongoDB service
+
+### 401 Unauthorized on protected APIs
+
+- Ensure token exists in local storage (`ecoShareAuth`)
+- Re-login if token expired or invalid
+
+### CORS or network access issue on mobile/LAN
+
+- Backend runs on `0.0.0.0` and can accept network connections
+- Use your machine IP in frontend env values when needed
+
+### Socket not receiving updates
+
+- Confirm `VITE_SOCKET_URL` points to backend host
+- Check browser console for socket connection errors
+
+## Deployment Notes
+
+- Deploy backend to Render/Railway/Fly/EC2 with env vars configured
+- Deploy frontend to Vercel/Netlify
+- Set frontend `VITE_API_URL` and `VITE_SOCKET_URL` to deployed backend URL
+- Set production CORS whitelist in backend before public release
+
+## Roadmap
+
+- Driver route optimization and ETA prediction
+- In-app chat between driver and passengers
+- Payment integration for bike rental
+- Push/email notifications for ride updates
+- Admin analytics dashboard
+- Unit/integration test coverage
+
+## Contributing
+
+Contributions are welcome.
+
+1. Fork the repository
+2. Create a branch: `git checkout -b feature/your-feature`
+3. Commit changes: `git commit -m "Add your feature"`
+4. Push branch: `git push origin feature/your-feature`
+5. Open a pull request
 
 ---
 
-## 16. Learning Outcomes
-
-By working on this project, you will gain:
-
-- ✓ Understanding of real-world problem solving and solution design
-- ✓ Hands-on experience in full-stack development
-- ✓ Knowledge of authentication, authorization, and access control
-- ✓ Database design and data management best practices
-- ✓ Development of scalable and user-friendly applications
-- ✓ Experience with REST API design and implementation
-- ✓ Frontend-backend integration techniques
-- ✓ Error handling and data validation strategies
-- ✓ Responsive UI/UX design implementation
-
----
-
-## 17. Contributing
-
-Contributions are welcome! Please follow the MVC architecture pattern and ensure code quality before submitting pull requests.
-
----
-
-## 18. License
-
-This project is open source and available under the MIT License.
+Built for sustainable campus mobility and smarter daily commuting.
