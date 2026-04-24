@@ -4,6 +4,7 @@ import { Car, Bike, MapPin, Shield, Zap, Leaf, ArrowRight, Users, TrendingDown, 
 import { useAuth } from "../context/AuthContext";
 import MapView, { CAMPUS_CENTER } from "../components/MapView";
 import Button from "../components/Button";
+import Shuffle from "../components/Shuffle";
 
 const DEMO_MARKERS = [
   { position: [23.2599, 77.4126], color: "#276ef1", pulse: true, popup: <span className="font-semibold">You are here</span> },
@@ -95,9 +96,24 @@ const HomePage = () => {
               <Leaf size={14} className="text-uber-gray-500" /> Smart Campus Carpooling & Bike Sharing
             </div>
 
-            <h1 className="text-5xl sm:text-7xl font-bold text-uber-black leading-tight mb-4 animate-slide-up">
-              Eco-Share
-            </h1>
+            <Shuffle
+              text="Eco-Share"
+              tag="h1"
+              className="text-3xl sm:text-5xl md:text-6xl font-bold text-uber-black leading-tight mb-4 animate-slide-up"
+              style={{ fontSize: "clamp(2rem, 5.5vw, 4rem)" }}
+              shuffleDirection="right"
+              duration={0.35}
+              animationMode="evenodd"
+              shuffleTimes={1}
+              ease="power3.out"
+              stagger={0.03}
+              threshold={0.1}
+              triggerOnce={true}
+              triggerOnHover
+              respectReducedMotion={true}
+              loop={false}
+              loopDelay={0}
+            />
 
             <p className="mt-3 text-lg mb-10 animate-slide-up font-bold" style={{ animationDelay: "100ms" }}>
               <span className="text-uber-black">travel without </span>
