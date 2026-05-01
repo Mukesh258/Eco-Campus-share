@@ -1,11 +1,5 @@
 # Eco-Share: Campus Carpooling and Bike Sharing
 
-# Demonstration Video
-
-Add your demo link here:
-
-https://github.com/user-attachments/assets/your-demo-video-id
-
 # Code Explanation Video
 
 Add your code walkthrough link here:
